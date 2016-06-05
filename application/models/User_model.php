@@ -6,13 +6,17 @@
             $this->load->database();
         }
 
-        public function create_user() {
+        public function load_helper_url() {
             $this->load->helper('url');
+        }
+
+        public function create_user() {
+            $this->load_helper_url();
 
             $data = array(
-                'username' => $username,
-                'password' => $this->hash_password($password),
-                'email' => $email
+                'username' => $this->input->post('username'),
+                'password' => $this->hash_password($this->input->post('password')),
+                'email' => $this->input->post('email')
             );
 
             return $this->db->insert('user', $data);
@@ -33,7 +37,18 @@
         }
 
         private function hash_password($password, $hash){
+            return password_hash($password, PASSWORD_BCRYPT);
+        }
+
+        private function verify_password_hash($password, $hash) {
             return password_verify($password, $hash);
+        }
+
+        public function get_user_id_from_username($username) {
+            $this->db->select('id');
+            $this->db->from('user');
+            $this->db->where('username', $username);
+            return $this->db->get()->row('id');
         }
     }
 

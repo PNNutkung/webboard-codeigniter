@@ -12,9 +12,13 @@
             //Do nothing.
         }
 
-        public function register() {
+        public function load_form_validation() {
             $this->load->helper('form');
             $this->load->library('form_validation');
+        }
+
+        public function register() {
+            $this->load_form_validation();
 
             $data['title'] = 'Registration';
 
@@ -41,6 +45,45 @@
 
         public function call_footer() {
             $this->load->view('templates/footer');
+        }
+
+        public function login() {
+            $this->load_form_validation();
+
+            $data['title'] = 'Login';
+
+            $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric');
+            $this->form_validation->set_rules('password', 'Password', 'required');
+
+            if($this->form_validation->run() === FALSE) {
+                $this->call_header($data);
+                $this->load->view('user/login');
+                $this->call_footer();
+            } else {
+                $username = $this->input->post('username');
+                $password = $this->input->post('password');
+
+                if( $this->User_model->resolve_user_login($username, $password) ) {
+                    $user_id = $this->user_model->get_user_id_from_username($username);
+                    $user = $this->user_model->get_user($user_id);
+
+                    $_SESSION['user_id'] = $user->id;
+                    $_SESSION['username'] = $user->username;
+                    $_SESSION['logged_in'] = true;
+                    $_SESSION['is_confirmed'] = $user->is_confirmed;
+                    $_SESSION['is_admin'] = $user->is_admin;
+
+                    $this->call_header($data);
+                    $this->load->view('user/login_success', $data);
+                    $this->call_footer();
+                } else {
+                    $data->error = 'Wrong username of password.';
+
+                    $this->call_header($data);
+                    $this->load->view('user/login');
+                    $this->call_footer();
+                }
+            }
         }
     }
 
