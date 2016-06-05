@@ -29,12 +29,12 @@
 
             if ( $this->form_validation->run() === FALSE ) {
                 $this->call_header($data);
-                $this->load->view('user/register');
+                $this->load->view('user/register/register');
                 $this->call_footer();
             } else {
                 $this->user_model->create_user();
                 $this->call_header($data);
-                $this->load->view('user/success');
+                $this->load->view('user/register/register_success');
                 $this->call_footer();
             }
         }
@@ -57,7 +57,7 @@
 
             if($this->form_validation->run() === FALSE) {
                 $this->call_header($data);
-                $this->load->view('user/login');
+                $this->load->view('user/login/login');
                 $this->call_footer();
             } else {
                 $username = $this->input->post('username');
@@ -74,13 +74,13 @@
                     $_SESSION['is_admin'] = $user->is_admin;
 
                     $this->call_header($data);
-                    $this->load->view('user/login_success', $data);
+                    $this->load->view('user/login/login_success', $data);
                     $this->call_footer();
                 } else {
                     $data->error = 'Wrong username of password.';
 
                     $this->call_header($data);
-                    $this->load->view('user/login');
+                    $this->load->view('user/login/login');
                     $this->call_footer();
                 }
             }
@@ -94,7 +94,7 @@
                 }
 
                 $this->call_header($data);
-                $this->load->view('user/logout_success', $data);
+                $this->load->view('user/logout/logout_success', $data);
                 $this->call_footer();
             } else {
                 redirect('/');
