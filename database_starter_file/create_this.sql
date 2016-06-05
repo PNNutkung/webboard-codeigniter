@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS `thread`;
 CREATE TABLE thread(
     threadID INT NOT NULL AUTO_INCREMENT,
     threadName VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-    threadDeatil LONGTEXT COLLATE utf8_unicode_ci NOT NULL,
+    threadDetail LONGTEXT COLLATE utf8_unicode_ci NOT NULL,
     createDate DATETIME NOT NULL DEFAULT NOW(),
     ownerID INT NOT NULL,
     PRIMARY KEY (`threadID`),
