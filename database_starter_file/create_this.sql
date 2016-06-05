@@ -1,4 +1,4 @@
-DROP TABLE IF EXIST `user`;
+DROP TABLE IF EXISTSS `user`;
 CREATE TABLE user(
     userID INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE user(
     PRIMARY KEY (`userID`)
 );
 
-DROP TABLE IF EXIST `thread`;
+DROP TABLE IF EXISTS `thread`;
 CREATE TABLE thread(
     threadID INT NOT NULL AUTO_INCREMENT,
     threadName VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE thread(
     FOREIGN KEY (`ownerID`) REFERENCES user(`userID`)
 );
 
-DROP TABLE IF EXIST `comment`;
+DROP TABLE IF EXISTS `comment`;
 CREATE TABLE comment(
     commentID INT NOT NULL AUTO_INCREMENT,
     commentDetail LONGTEXT COLLATE utf8_unicode_ci NOT NULL,
@@ -28,6 +28,7 @@ CREATE TABLE comment(
     FOREIGN KEY (`ownerID`) REFERENCES user(`userID`)
 );
 
+DROP TABLE IF EXISTS `board`;
 CREATE TABLE board(
     boardID INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (`boardID`),
