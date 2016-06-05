@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTSS `user`;
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE user(
     userID INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
@@ -15,6 +15,7 @@ CREATE TABLE thread(
     threadName VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
     threadDeatil LONGTEXT COLLATE utf8_unicode_ci NOT NULL,
     createDate DATETIME NOT NULL DEFAULT NOW(),
+    ownerID INT NOT NULL,
     PRIMARY KEY (`threadID`),
     FOREIGN KEY (`ownerID`) REFERENCES user(`userID`)
 );
@@ -24,6 +25,7 @@ CREATE TABLE comment(
     commentID INT NOT NULL AUTO_INCREMENT,
     commentDetail LONGTEXT COLLATE utf8_unicode_ci NOT NULL,
     createDate DATETIME NOT NULL DEFAULT NOW(),
+    ownerID INT NOT NULL,
     PRIMARY KEY (`commentID`),
     FOREIGN KEY (`ownerID`) REFERENCES user(`userID`)
 );
@@ -31,7 +33,9 @@ CREATE TABLE comment(
 DROP TABLE IF EXISTS `board`;
 CREATE TABLE board(
     boardID INT NOT NULL AUTO_INCREMENT,
+    threadID INT NOT NULL,
+    commentID INT NOT NULL,
     PRIMARY KEY (`boardID`),
     FOREIGN KEY (`threadID`) REFERENCES thread(`threadID`),
-    FOREIGN KEY (`comment`) REFERENCES comment(`commentID`)
+    FOREIGN KEY (`commentID`) REFERENCES comment(`commentID`)
 );
