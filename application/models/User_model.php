@@ -12,10 +12,10 @@
 
         public function create_user() {
             $this->load_helper_url();
-
+            $pass = $this->input->post('password');
             $data = array(
                 'username' => $this->input->post('username'),
-                'password' => $this->hash_password($this->input->post('password')),
+                'password' => $this->hash_password($pass),
                 'email' => $this->input->post('email')
             );
 
@@ -31,12 +31,12 @@
         }
 
         public function get_user($user_id) {
-            $this->db->from('users');
-            $this->db->where('id', $user_id);
+            $this->db->from('user');
+            $this->db->where('userID', $user_id);
             return $this->db->get()->row();
         }
 
-        private function hash_password($password, $hash){
+        private function hash_password($password){
             return password_hash($password, PASSWORD_BCRYPT);
         }
 
@@ -45,7 +45,7 @@
         }
 
         public function get_user_id_from_username($username) {
-            $this->db->select('id');
+            $this->db->select('userID');
             $this->db->from('user');
             $this->db->where('username', $username);
             return $this->db->get()->row('id');

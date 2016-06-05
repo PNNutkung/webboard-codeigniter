@@ -3,22 +3,24 @@
 
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('session'));
-            $this->load->helper(array('url'));
-            $this0->load->model('user_model');
+            $this->load->library('session');
+            $this->load->helper('url_helper');
+            $this->load->model('user_model');
         }
 
         public function index(){
             //Do nothing.
         }
 
-        public function load_form_validation() {
+        /*public function load_form_validation() {
             $this->load->helper('form');
             $this->load->library('form_validation');
-        }
+        }*/
 
         public function register() {
-            $this->load_form_validation();
+            //$this->load_form_validation();
+            $this->load->helper('form');
+            $this->load->library('form_validation');
 
             $data['title'] = 'Registration';
 
@@ -48,7 +50,9 @@
         }
 
         public function login() {
-            $this->load_form_validation();
+            //$this->load_form_validation();
+            $this->load->helper('form');
+            $this->load->library('form_validation');
 
             $data['title'] = 'Login';
 
@@ -63,21 +67,21 @@
                 $username = $this->input->post('username');
                 $password = $this->input->post('password');
 
-                if( $this->User_model->resolve_user_login($username, $password) ) {
+                if( $this->user_model->resolve_user_login($username, $password) ) {
                     $user_id = $this->user_model->get_user_id_from_username($username);
                     $user = $this->user_model->get_user($user_id);
 
-                    $_SESSION['user_id'] = $user->id;
-                    $_SESSION['username'] = $user->username;
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['username'] = $user['username'];
                     $_SESSION['logged_in'] = true;
-                    $_SESSION['is_confirmed'] = $user->is_confirmed;
-                    $_SESSION['is_admin'] = $user->is_admin;
+                    $_SESSION['is_confirmed'] = $user['is_confirmed'];
+                    $_SESSION['is_admin'] = $user['is_admin'];
 
                     $this->call_header($data);
                     $this->load->view('user/login/login_success', $data);
                     $this->call_footer();
                 } else {
-                    $data->error = 'Wrong username of password.';
+                    $data['error'] = 'Wrong username of password.';
 
                     $this->call_header($data);
                     $this->load->view('user/login/login');
