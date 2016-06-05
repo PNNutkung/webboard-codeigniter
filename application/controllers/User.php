@@ -85,6 +85,21 @@
                 }
             }
         }
+
+        public function logout() {
+            $data['title'] = 'Logout';
+            if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+                foreach ($_SESSION as $key => $value) {
+                    unset($_SESSION[$key]);
+                }
+
+                $this->call_header($data);
+                $this->load->view('user/logout_success', $data);
+                $this->call_footer();
+            } else {
+                redirect('/');
+            }
+        }
     }
 
 ?>
