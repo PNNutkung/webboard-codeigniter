@@ -29,6 +29,25 @@
             $this->load->view('board/view', $data);
             $this->load->view('templates/footer');
         }
+
+        public function newThread() {
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+
+            $data['title'] = 'Create new thread';
+
+            $this->form_validation->set_rules('threadName', 'ThreadName', 'required');
+            $this->form_validation->set_rules('threadDetail', 'ThreadDetail', 'required');
+
+            if($this->form_validation->run() === FALSE) {
+                $this->load->view('templates/header', $data);
+                $this->load->view('board/newThread');
+                $this->load->view('templates/footer');
+            } else {
+                $this->board_model->set_board();
+                $this->load->view('board/success');
+            }
+        }
     }
 
 ?>
