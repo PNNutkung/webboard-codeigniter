@@ -12,20 +12,18 @@
             //Do nothing.
         }
 
-        /*public function load_form_validation() {
+        public function load_form_validation() {
             $this->load->helper('form');
             $this->load->library('form_validation');
-        }*/
+        }
 
         public function register() {
-            //$this->load_form_validation();
-            $this->load->helper('form');
-            $this->load->library('form_validation');
+            $this->load_form_validation();
 
             $data['title'] = 'Registration';
 
-            $this->form_validation->set_rules('username', 'Username', 'trim|required|alpha_numeric|min_length[4]|is_unique[user.username]', array('is_unique' => 'This username already exists. Please choose another one.'));
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[user.email]');
+            $this->form_validation->set_rules('username', 'Username', 'trim|required|alpha_numeric|min_length[4]|is_unique[users.username]', array('is_unique' => 'This username already exists. Please choose another one.'));
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
             $this->form_validation->set_rules('password_confirm', 'Confirm Password', 'trim|required|min_length[6]|matches[password]');
 
@@ -50,16 +48,13 @@
         }
 
         public function login() {
-            //$this->load_form_validation();
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-
+            $this->load_form_validation();
             $data['title'] = 'Login';
 
             $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric');
             $this->form_validation->set_rules('password', 'Password', 'required');
 
-            if($this->form_validation->run() === FALSE) {
+            if(!$this->form_validation->run()) {
                 $this->call_header($data);
                 $this->load->view('user/login/login');
                 $this->call_footer();
@@ -71,11 +66,10 @@
                     $user_id = $this->user_model->get_user_id_from_username($username);
                     $user = $this->user_model->get_user($user_id);
 
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['logged_in'] = true;
-                    $_SESSION['is_confirmed'] = $user['is_confirmed'];
-                    $_SESSION['is_admin'] = $user['is_admin'];
+                    $_SESSION['userID'] = $user->userID;
+                    $_SESSION['username'] = $user->username;
+                    $_SESSION['loggedIn'] = true;
+                    $_SESSION['isAdmin'] = $user->isAdmin;
 
                     $this->call_header($data);
                     $this->load->view('user/login/login_success', $data);
@@ -92,7 +86,7 @@
 
         public function logout() {
             $data['title'] = 'Logout';
-            if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+            if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
                 foreach ($_SESSION as $key => $value) {
                     unset($_SESSION[$key]);
                 }

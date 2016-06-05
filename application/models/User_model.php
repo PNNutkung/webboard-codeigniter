@@ -19,19 +19,19 @@
                 'email' => $this->input->post('email')
             );
 
-            return $this->db->insert('user', $data);
+            return $this->db->insert('users', $data);
         }
 
         public function resolve_user_login($username, $password) {
             $this->db->select('password');
-            $this->db->from('user');
+            $this->db->from('users');
             $this->db->where('username', $username);
             $hash = $this->db->get()->row('password');
             return $this->verify_password_hash($password, $hash);
         }
 
         public function get_user($user_id) {
-            $this->db->from('user');
+            $this->db->from('users');
             $this->db->where('userID', $user_id);
             return $this->db->get()->row();
         }
@@ -46,9 +46,9 @@
 
         public function get_user_id_from_username($username) {
             $this->db->select('userID');
-            $this->db->from('user');
+            $this->db->from('users');
             $this->db->where('username', $username);
-            return $this->db->get()->row('id');
+            return $this->db->get()->row('userID');
         }
     }
 
