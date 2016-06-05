@@ -6,7 +6,9 @@
             $this->load->database();
         }
 
-        public function create_user($username, $email, $password) {
+        public function create_user() {
+            $this->load->helper('url');
+
             $data = array(
                 'username' => $username,
                 'password' => $this->hash_password($password),
